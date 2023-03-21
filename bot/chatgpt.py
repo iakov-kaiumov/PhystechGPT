@@ -18,15 +18,24 @@ class ChatGPT:
         """Asks the language model a question and returns an answer."""
         try:
             messages = self._generate_messages(question, history)
-            resp = await openai.ChatCompletion.acreate(
-                model="gpt-3.5-turbo",
-                messages=messages,
+            resp = openai.Completion.create(
+                model='davinci',
+                prompt=question,
                 temperature=0.7,
                 max_tokens=1000,
                 top_p=1,
                 frequency_penalty=0,
                 presence_penalty=0,
             )
+            # resp = await openai.ChatCompletion.acreate(
+            #     model="gpt-3.5-turbo",
+            #     messages=messages,
+            #     temperature=0.7,
+            #     max_tokens=1000,
+            #     top_p=1,
+            #     frequency_penalty=0,
+            #     presence_penalty=0,
+            # )
             answer = self._prepare_answer(resp)
             return answer
 
@@ -48,8 +57,8 @@ class ChatGPT:
         """
         if len(resp.choices) == 0:
             raise ValueError("received an empty answer")
-
-        answer = resp.choices[0].message.content
+        # answer = resp.choices[0].message.content
+        answer = resp.choices[0].text
         answer = answer.strip()
         answer = answer.replace("<", "&lt;")
         answer = PRE_RE.sub(r"<\1", answer)
