@@ -2,7 +2,7 @@ version: "3"
 
 services:
     pokitoki:
-        container_name: pokitoki
+        container_name: PhystechGPT
         command: python3 -m bot.bot
         restart: always
         build:
