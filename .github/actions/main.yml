@@ -1,0 +1,28 @@
+name: Django CI
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH Commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd PhystechCenter/
+            git clone 'https://${{ github.REPOSITORY_OWNER }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git'
+            cd ${{ github.event.repository.name }}/
+            git remote set-url origin 'https://${{ github.REPOSITORY_OWNER }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git'
+            git reset --hard
+            git pull
+            
+            echo "${{ vars.CONFIG }}" > config.yml
+            
+            echo ${{ secrets.SHELL_PW }} | sudo -S docker compose up -d --build
