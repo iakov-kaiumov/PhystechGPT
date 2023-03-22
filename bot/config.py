@@ -1,8 +1,12 @@
 """Bot configuration parameters."""
 
 import yaml
+from pathlib import Path
 
-with open("config.yml", "r") as f:
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+with open(BASE_DIR / 'config.yml', "r") as f:
     config = yaml.safe_load(f)
 
 # Bot version.

@@ -207,7 +207,7 @@ async def _reply_to(message: Message, context: CallbackContext, question: str):
         user = UserData(context.user_data)
         user.messages.add(question, answer)
         logger.debug(user.messages)
-        await message.reply_text(answer, parse_mode=ParseMode.HTML)
+        await message.reply_text(answer, parse_mode=ParseMode.MARKDOWN)
 
     except Exception as exc:
         print(traceback.format_exc())
