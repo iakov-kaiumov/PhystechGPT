@@ -25,4 +25,4 @@ jobs:
             
             echo "${{ vars.CONFIG }}" > config.yml
             
-            echo ${{ secrets.SHELL_PW }} | sudo -S docker compose up -d --build
+            echo ${{ secrets.SHELL_PW }} | sudo -S docker compose up -d --build --force-recreate
